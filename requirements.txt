@@ -1,0 +1,4 @@
+aiogram
+saucenao_api
+pygelbooru
+pybooru
