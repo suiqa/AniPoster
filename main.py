@@ -7,16 +7,16 @@ from aiogram import Bot, Dispatcher, executor, types
 from aiogram.utils.exceptions import BotBlocked
 from saucenao_api import SauceNao
 
-# Токен бота, диспатчер и логирование
-bot = Bot('token_here', parse_mode='HTML')
+#Telegram bot token
+bot = Bot('token', parse_mode='HTML')
 
-# Токен SauceNao
-sauce = SauceNao('api_key_here')
+#SauceNao api key
+sauce = SauceNao('api_key')
 
-# Токен Gelbooru
+#Gelbooru api key
 gelbooru = Gelbooru('api_key', 'user_id')
 
-# Токен Danbooru
+#Danbooru api key
 danbooru = Danbooru('danbooru', username='username', api_key='api_key_here')
 
 
@@ -25,23 +25,23 @@ async def main(dp: Dispatcher):
     async def start(message: types.Message):
         await message.reply("Image Poster for @neko_religion")
 
-    # Обработка изображения и поиск на SauceNao
+    #SauceNao search from image
     @dp.message_handler(content_types=["photo"])
     async def download_photo(message: types.Message):
         await message.photo[-1].download(destination_file="temp.jpg")
-        await message.reply("Поиск изображения по подходящим критериям.")
+        await message.reply("Image search by suitable criteria.")
         with open("temp.jpg", 'rb') as img:
             results = sauce.from_file(img)
             for url in results[0].urls:
                 if 'gelbooru.com' in url or 'konachan.net' in url:
-                    await message.reply(f"Автор: {results[0].author}\nСсылка на изображение: {url}")
+                    await message.reply(f"Author: {results[0].author}\nImage url: {url}")
                     break
             else:
-                await message.reply("Изображение по подходящим критериям не найдено.")
+                await message.reply("Image not found.")
 
         os.remove("temp.jpg")
 
-    # Пост картинки по id Gelbooru
+    #Post image from Gelbooru id (/post_gel id)
     @dp.message_handler(commands="post_gel")
     async def post_gel(message: types.Message):
         post_id_gel = message.get_args()
@@ -64,7 +64,7 @@ async def main(dp: Dispatcher):
                 rating_gel = 'Safe 🟢'
         await bot.send_photo(chat_id=-1001646859181, photo=str(results_gel.file_url), caption=f'🏷 Tags: {tags_gel}\n🔗 Source: {results_gel.source}\n💮 Rating: {rating_gel}\n\n🆔 Gelbooru : {results_gel.id}', reply_markup=keyboard)
 
-    # Пост картинки по id Danbooru
+    #Post image from Danbooru id (/post_dan id)
     @dp.message_handler(commands="post_dan")
     async def post_dan(message: types.Message):
         post_id_dan = message.get_args()
@@ -83,13 +83,13 @@ async def main(dp: Dispatcher):
 
         await bot.send_photo(chat_id=-1001646859181, photo=types.InputFile.from_url(res['file_url']), caption=txt, reply_markup=kb)
 
-    # Обход блокировки бота
+    #Hack for bot blocked from user
     @dp.errors_handler(exception=BotBlocked)
     async def error_bot_blocked(update: types.Update, exception: BotBlocked):
         print(f"Меня заблокировал пользователь!\nСообщение: {update}\nОшибка: {exception}")
         return True
 
-# Запуск бота
+#Bot start
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
