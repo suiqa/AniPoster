@@ -62,6 +62,8 @@ async def main(dp: Dispatcher):
                 rating_gel = 'Explicit 🔴'
             elif rating_gel == 'l':
                 rating_gel = 'Safe 🟢'
+            elif rating_gel == 't':
+                rating_gel = 'Explicit 🔴'
         await bot.send_photo(chat_id=-1001646859181, photo=str(results_gel.file_url), caption=f'🏷 Tags: {tags_gel}\n🔗 Source: {results_gel.source}\n💮 Rating: {rating_gel}\n\n🆔 Gelbooru : {results_gel.id}', reply_markup=keyboard)
 
     #Post image from Danbooru id (/post_dan id)
