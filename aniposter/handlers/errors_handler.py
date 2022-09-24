@@ -14,7 +14,7 @@ async def error_bot_blocked(update: types.Update, exception: BotBlocked):
 @dp.errors_handler(exception=ChatNotFound)
 async def error_bot_chat_not_found(update: types.Update, exception: ChatNotFound):
     logger.error(
-        f"Вы точно добавили меня в этот чат? \nСообщение: {update}\nОшибка: {exception}"
+        f"Чат не найден? \nСообщение: {update}\nОшибка: {exception}"
     )
 
 

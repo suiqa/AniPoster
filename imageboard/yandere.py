@@ -5,7 +5,6 @@ from .models.moebooru import MoebooruModel
 class Moebooru:
     domain = "yande.re"
     get_url = f"https://{domain}/post.json?tags="
-    post_url = "/post.json?"
     rating = ["rating:s", "rating:e"]
     tag = "tags"
 
