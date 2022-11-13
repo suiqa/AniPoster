@@ -2,3 +2,4 @@ aiogram
 saucenao_api
 aiohttp
 pydantic
+loguru
